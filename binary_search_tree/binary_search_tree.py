@@ -24,34 +24,45 @@ class BSTNode:
 
     # Insert the given value into the tree
     def insert(self, value):
-        # If value is already in tree, return none
+        # Instantiate new_node w/ value
         new_node = BSTNode(value=value)
+        # If value is less than root value
         if self.value > value:
+            # If self.left doesn't exist make, set it to the new node
             if self.left is None:
                 self.left = new_node
                 return
+            # Else, use recursion on self.left
             else:
                 self.left.insert(value)
+        # If value is greater than root value
         else:
+            # If self.right doesn't exist make, set it to the new node
             if self.right is None:
                 self.right = new_node
                 return
+            # Else, use recursion on self.right
             else:
                 self.right.insert(value)
 
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
-        current = self
-        while current is not None:
-            if current.value == target:
-                return True
-            elif current.value > target:
-                current = current.left
-            elif current.value < target:
-                current = current.right
-        return False
-            
+        # Case 1: self.value equals target
+        if self.value == target:
+            return True
+        # Case 2: self.value is greater than target
+        if self.value > target:
+            if self.left is None:
+                return False
+            else:
+                return self.left.contains(target)
+        # Case 3: self.value is less than target
+        if self.value < target:
+            if self.right is None:
+                return False
+            else:
+                return self.right.contains(target)
 
     # Return the maximum value found in the tree
     def get_max(self):
