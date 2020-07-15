@@ -8,6 +8,13 @@ This part of the project comprises two days:
    on the BSTNode class.
 2. Implement the `in_order_print`, `bft_print`, and `dft_print` methods
    on the BSTNode class.
+
+* Should have the methods `insert`, `contains`, `get_max`.
+  * `insert` adds the input value to the binary search tree, adhering to the rules of the ordering of elements in a binary search tree.
+  * `contains` searches the binary search tree for the input value, returning a boolean indicating whether the value exists in the tree or not.
+  * `get_max` returns the maximum value in the binary search tree.
+  * `for_each` performs a traversal of _every_ node in the tree, executing the passed-in callback function on each tree node value.
+     There is a myriad of ways to perform tree traversal; in this case any of them should work. 
 """
 class BSTNode:
     def __init__(self, value):
@@ -17,20 +24,52 @@ class BSTNode:
 
     # Insert the given value into the tree
     def insert(self, value):
-        pass
+        # If value is already in tree, return none
+        new_node = BSTNode(value=value)
+        if self.value > value:
+            if self.left is None:
+                self.left = new_node
+                return
+            else:
+                self.left.insert(value)
+        else:
+            if self.right is None:
+                self.right = new_node
+                return
+            else:
+                self.right.insert(value)
 
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
-        pass
+        current = self
+        while current is not None:
+            if current.value == target:
+                return True
+            elif current.value > target:
+                current = current.left
+            elif current.value < target:
+                current = current.right
+        return False
+            
 
     # Return the maximum value found in the tree
     def get_max(self):
-        pass
+        current = self
+        if current is None:
+            return 0
+        while current is not None:
+            max_val = current.value
+            current = current.right
+        return max_val
 
     # Call the function `fn` on the value of each node
     def for_each(self, fn):
-        pass
+        self.value = fn(self.value)
+        if self.left:
+            self.left.for_each(fn)
+        if self.right:
+            self.right.for_each(fn)
 
     # Part 2 -----------------------
 
