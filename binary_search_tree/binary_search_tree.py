@@ -58,7 +58,7 @@ class BSTNode:
             else:
                 return self.left.contains(target)
         # Case 3: self.value is less than target
-        if self.value < target:
+        else:
             if self.right is None:
                 return False
             else:
@@ -66,17 +66,26 @@ class BSTNode:
 
     # Return the maximum value found in the tree
     def get_max(self):
-        current = self
-        if current is None:
-            return 0
-        while current is not None:
-            max_val = current.value
-            current = current.right
-        return max_val
+        # Iterative approach
+        # current = self
+        # max_val = 0
+        # if current is None:
+        #     return max_val
+        # while current is not None:
+        #     max_val = current.value
+        #     current = current.right
+        # return max_val
+
+        # Recursive approach
+        if self is None:
+            return None
+        if self.right is None:
+            return self.value
+        return self.right.get_max()
 
     # Call the function `fn` on the value of each node
     def for_each(self, fn):
-        self.value = fn(self.value)
+        fn(self.value)
         if self.left:
             self.left.for_each(fn)
         if self.right:
@@ -86,18 +95,73 @@ class BSTNode:
 
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
-    def in_order_print(self, node):
-        pass
+    def in_order_print(self):
+        # # Solution with for_each method
+        # arr = []
+        # fn = lambda x: arr.append(x)
+        # self.for_each(fn=fn)
+        # arr.sort()
+        # print(*arr, sep="\n")
+
+        # Matt's solution
+        if self is None:
+            return
+        # Check if we can move left
+        if self.left is not None:
+            self.left.in_order_print()
+        # Visit the node by printing its value
+        print(self.value)
+
+        # Check if we can't move right
+        if self.right is not None:
+            self.right.in_order_print()
+        
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
-    def bft_print(self, node):
-        pass
+    def bft_print(self):
+        # Use a queue to form a line for the nodes to get in
+        # Start by placing the root node in the queue
+        queue = [self]
+
+        # Need a while loop to iterate (not recursion for BFT)
+        while len(queue) > 0:
+            # dequeue item from front of queue
+            # print its value
+            temp = queue.pop(0)
+            print(temp.value)
+
+            # Place current item's left node in queue if not None
+            if temp.left is not None:
+                queue.append(temp.left)
+            # Place current item's right node in the queue if not None
+            if temp.right is not None:
+                queue.append(temp.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
-    def dft_print(self, node):
-        pass
+    def dft_print(self):
+        # # Solution with for_each method (recursive)
+        # fn = lambda x: print(x)
+        # self.for_each(fn=fn)
+
+        # Iterative approach
+        # Create a stack to put nodes in, start with root node in it
+        stack = [self]
+
+        # While loop to manage iteration
+        while len(stack) > 0:
+            # Pop item off stack and print its value
+            temp = stack.pop(-1)
+            print(temp.value)
+
+            # Place current item's left node in stack if not None
+            if temp.left:
+                stack.append(temp.left)
+            # Place current item's left node in stack if not None
+            if temp.right:
+                stack.append(temp.right)
+
 
     # Stretch Goals -------------------------
     # Note: Research may be required
